@@ -413,7 +413,7 @@ def describe_tg(it):
             label = {"m2": "oppervlakte", "beschikbaar": "start", "deadline": "reageren tot"}.get(k, k)
             lines.append(f"{label}: {escape(str(v))}")
     link = it.get("url") or it.get("bron") or BASE
-    lines.append(f'<a href="{escape(link)}">Bekijk op SSH</a>')
+    lines.append(escape(link))
     return "\n".join(lines)
 
 

@@ -1,4 +1,4 @@
-name: SSH woning-monitor
+name: Woning-monitor (SSH + Van der Huizen)
 
 on:
   schedule:
@@ -39,7 +39,7 @@ jobs:
           pip install -r requirements-ssh.txt
           python -m playwright install --with-deps chromium
 
-      - name: Aanbod controleren
+      - name: SSH controleren
         env:
           SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
@@ -58,6 +58,18 @@ jobs:
             python ssh_monitor.py
           fi
 
+      - name: Van der Huizen controleren
+        if: always() && inputs.mode != 'alleen testbericht'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python vdh_monitor.py --force
+          else
+            python vdh_monitor.py
+          fi
+
       - name: Debugbestanden bewaren
         if: always()
         uses: actions/upload-artifact@v4
@@ -70,11 +82,11 @@ jobs:
       - name: Status opslaan
         if: always()
         run: |
-          if [ -n "$(git status --porcelain ssh_state.json)" ]; then
+          if [ -n "$(git status --porcelain ssh_state.json vdh_state.json)" ]; then
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add ssh_state.json
-            git commit -m "Update SSH-monitor-status"
+            git add ssh_state.json vdh_state.json
+            git commit -m "Update woning-monitor-status"
             git pull --rebase --autostash || true
             git push
           fi

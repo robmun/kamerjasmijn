@@ -87,3 +87,9 @@ Optioneel: `MAIL_TO_SSH` (andere ontvangers, komma-gescheiden). `NTFY_TOPIC` wor
 ## Goed om te weten
 - Lukt het drie keer achter elkaar niet om aanbod te lezen, dan krijg je één waarschuwingsmail.
 - Een mislukte controle telt nooit als "niets nieuw"; de opgeslagen lijst blijft dan staan.
+
+## Van der Huizen
+`vdh_monitor.py` draait in dezelfde workflow (stap **Van der Huizen controleren**) en leest
+https://www.vanderhuizen.com/provincies/utrecht/utrecht-1. Bij een nieuwe woning of een
+gewijzigde huurprijs komt er een Telegram-bericht met huur (kaal en all-in), type, oppervlakte,
+beschikbaarheid, doelgroep en de link naar de advertentie. Status staat in `vdh_state.json`.
