@@ -71,13 +71,14 @@ browser, dus het script gebruikt een onzichtbare Chrome-browser (Playwright).
 |---|---|
 | `SSH_USERNAME` | je gebruikersnaam/e-mail voor sshxl.nl |
 | `SSH_PASSWORD` | je SSH-wachtwoord |
-| `SMTP_USER` | robertmunnichs@gmail.com (als die er nog niet staat) |
-| `SMTP_PASSWORD` | een Gmail-app-wachtwoord (als die er nog niet staat) |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | dezelfde als voor de Socius-monitor (meldingen via Telegram) |
+| `SMTP_USER` | optioneel, voor e-mail: robertmunnichs@gmail.com |
+| `SMTP_PASSWORD` | optioneel, voor e-mail: een Gmail-app-wachtwoord |
 
 Optioneel: `MAIL_TO_SSH` (andere ontvangers, komma-gescheiden). `NTFY_TOPIC` wordt ook gebruikt als die bestaat.
 
 ## Testen
-1. **Actions → SSH woning-monitor → Run workflow → "alleen testmail"**: jullie krijgen allebei een testmail.
+1. **Actions → SSH woning-monitor → Run workflow → "alleen testbericht"**: er komt een testbericht in Telegram.
 2. Nog een keer met **"controle nu"**. De eerste keer wordt het huidige aanbod als nulmeting opgeslagen
    (geen mail). In het log staat bijv. `12 aanbiedingen gevonden (methode: json)`.
 3. Staat er `0 aanbiedingen gevonden`? Download onderaan de run het bestand **ssh-debug**

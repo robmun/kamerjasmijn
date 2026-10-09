@@ -373,6 +373,50 @@ def push(title, message):
         print(f"ntfy mislukt: {e}")
 
 
+def telegram(html_text):
+    """Stuur een bericht via de Telegram-bot (zelfde bot als de Socius-monitor)."""
+    token, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+    if not (token and chat):
+        return False
+    import requests
+    # Telegram staat max. 4096 tekens per bericht toe: in stukken knippen op lege regels.
+    chunks, cur = [], ""
+    for block in html_text.split("\n\n"):
+        if len(cur) + len(block) + 2 > 3800 and cur:
+            chunks.append(cur)
+            cur = ""
+        cur += ("\n\n" if cur else "") + block
+    chunks.append(cur)
+    ok = True
+    for c in chunks:
+        for attempt in (1, 2):
+            try:
+                r = requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                                  data={"chat_id": chat, "text": c, "parse_mode": "HTML",
+                                        "disable_web_page_preview": "true"}, timeout=30)
+                r.raise_for_status()
+                break
+            except Exception as e:
+                print(f"Telegram mislukt (poging {attempt}): {e.__class__.__name__}")
+                if attempt == 2:
+                    ok = False
+    if ok:
+        print("Telegram-bericht verstuurd.")
+    return ok
+
+
+def describe_tg(it):
+    lines = [f"<b>{escape(it['naam'])}</b>"]
+    for k in ("huur", "type", "m2", "beschikbaar", "deadline", "toewijzing", "voorwaarden"):
+        if it.get(k):
+            v = f"{it[k]} m²" if k == "m2" else it[k]
+            label = {"m2": "oppervlakte", "beschikbaar": "start", "deadline": "reageren tot"}.get(k, k)
+            lines.append(f"{label}: {escape(str(v))}")
+    link = it.get("url") or it.get("bron") or BASE
+    lines.append(f'<a href="{escape(link)}">Bekijk op SSH</a>')
+    return "\n".join(lines)
+
+
 def describe_text(it):
     parts = [it["naam"]]
     for k in ("plaats", "type", "huur", "m2", "beschikbaar", "deadline", "toewijzing", "voorwaarden"):
@@ -400,9 +444,11 @@ def alert(new_items, today):
             f"<p>Nieuw bij SSH ({n}):</p><ol style='padding-left:18px'>"
             + "".join(describe_html(i) for i in new_items)
             + "</ol><p style='color:#5f6b67'>Controleer de voorwaarden, deadline en loting op de site.</p></div>")
-    ok = send_mail(subject, text, html)
+    ok_tg = telegram(f"🏠 <b>{n} nieuw SSH-aanbod in Utrecht</b>\n\n"
+                     + "\n\n".join(describe_tg(i) for i in new_items))
+    ok_mail = send_mail(subject, text, html) if os.environ.get("SMTP_USER") else False
     push(f"🏠 {n} nieuw SSH-aanbod", "\n".join(i["naam"][:80] for i in new_items[:8]))
-    return ok
+    return ok_tg or ok_mail
 
 
 # --------------------------------------------------------------------------- #
@@ -437,9 +483,11 @@ def main():
     today = now.strftime("%Y-%m-%d")
 
     if args.test_notify:
-        ok = send_mail(f"[Utrecht Housing Alert] Testmail SSH-monitor — {today}",
+        ok = telegram("✅ Testbericht van de SSH-monitor. Als je dit leest, werkt Telegram.")
+        if os.environ.get("SMTP_USER"):
+            ok = send_mail(f"[Utrecht Housing Alert] Testmail SSH-monitor — {today}",
                        "Dit is een testmail van de SSH-monitor. Als je dit leest, werkt de e-mail.",
-                       "<p>Dit is een testmail van de SSH-monitor. Als je dit leest, werkt de e-mail.</p>")
+                       "<p>Dit is een testmail van de SSH-monitor. Als je dit leest, werkt de e-mail.</p>") or ok
         push("SSH-monitor test", "Testmelding van de SSH-monitor.")
         sys.exit(0 if ok else 1)
 
@@ -479,7 +527,10 @@ def main():
         # Mislukte controle is NIET hetzelfde als 'niets nieuw': niets wissen, één keer waarschuwen.
         state["fail_count"] = state.get("fail_count", 0) + 1
         if state["fail_count"] == 3:
-            send_mail(f"[Utrecht Housing Alert] SSH-monitor leest geen aanbod meer — {today}",
+            telegram("⚠️ De SSH-monitor heeft drie keer achter elkaar geen aanbod kunnen lezen. "
+                     "Kijk in GitHub bij Actions naar de laatste run (bestand ssh-debug).")
+            if os.environ.get("SMTP_USER"):
+                send_mail(f"[Utrecht Housing Alert] SSH-monitor leest geen aanbod meer — {today}",
                       "De SSH-monitor heeft drie keer achter elkaar geen aanbod kunnen lezen. "
                       "Kijk in GitHub bij Actions naar de laatste run (bestand ssh-debug).",
                       "<p>De SSH-monitor heeft drie keer achter elkaar geen aanbod kunnen lezen. "

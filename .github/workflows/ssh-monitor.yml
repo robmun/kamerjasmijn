@@ -12,7 +12,7 @@ on:
         type: choice
         options:
           - controle nu
-          - alleen testmail
+          - alleen testbericht
         default: controle nu
 
 permissions:
@@ -47,8 +47,10 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           MAIL_TO_SSH: ${{ secrets.MAIL_TO_SSH }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          if [ "${{ inputs.mode }}" = "alleen testmail" ]; then
+          if [ "${{ inputs.mode }}" = "alleen testbericht" ]; then
             python ssh_monitor.py --test-notify
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             python ssh_monitor.py --force
