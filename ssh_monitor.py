@@ -167,9 +167,9 @@ def parse_card(txt):
         "huur": r"€\s*([\d.]+,\d{2})\s*/\s*mnd",
         "beschikbaar": r"start op\s*(\d{2}-\d{2}-\d{4})",
         "m2": r"Oppervlakte:\s*([\d.,]+)\s*m",
-        "type": r"Type woning:\s*([^:]+?)(?=\s+[A-Z][a-z]+\b[^:]*:|$)",
+        "type": r"Type woning:\s*(.+?)(?=\s+(?:Manier|Reageren|Reageer|Toewijzing|Beschikbaar|Huur|Oppervlakte|Type|Deadline|Bekijk)|$)",
         "deadline": r"(?:Reageren tot|Reageer voor|Deadline|Sluit(?:ingsdatum)?)[:\s]*([\d-]{8,10}[^A-Z]*)",
-        "toewijzing": r"Manier van toewijz\w*:\s*([\w -]+?)(?=\s+[A-Z][a-z]+\b[^:]*:|$)|\b(Loting|Inschrijfduur|Wie het eerst komt|Direct huren|Voorrang[^.]*)",
+        "toewijzing": r"Manier van toewijz\w*:\s*(.+?)(?=\s+(?:Reageren|Reageer|Huur|Oppervlakte|Type|Deadline|Bekijk)|$)|\b(Loting|Inschrijfduur|Wie het eerst komt|Direct huren|Voorrang[^.]*)",
     }
     for k, p in pats.items():
         m = re.search(p, txt, re.I)
