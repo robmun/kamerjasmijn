@@ -54,3 +54,35 @@ Daarna draait hij vanzelf elke ~5 minuten.
 - GitHub zet geplande workflows uit na 60 dagen zonder activiteit in de repository.
   Je krijgt dan een mail; klik op **Enable workflow** in het tabblad Actions.
 - Uitzetten: tabblad **Actions** → workflow → **⋯** → **Disable workflow**.
+
+---
+
+# SSH woning-monitor
+
+`ssh_monitor.py` controleert het aanbod op sshxl.nl rond **09:00 en 13:00** (Amsterdamse tijd)
+en mailt Robert en Jasmijn zodra er nieuw aanbod bij komt. De SSH-site werkt alleen in een
+browser, dus het script gebruikt een onzichtbare Chrome-browser (Playwright).
+
+## Installeren
+1. Upload `ssh_monitor.py`, `requirements-ssh.txt` en `.github/workflows/ssh-monitor.yml`.
+2. Voeg onder **Settings → Secrets and variables → Actions** toe:
+
+| Naam | Waarde |
+|---|---|
+| `SSH_USERNAME` | je gebruikersnaam/e-mail voor sshxl.nl |
+| `SSH_PASSWORD` | je SSH-wachtwoord |
+| `SMTP_USER` | robertmunnichs@gmail.com (als die er nog niet staat) |
+| `SMTP_PASSWORD` | een Gmail-app-wachtwoord (als die er nog niet staat) |
+
+Optioneel: `MAIL_TO_SSH` (andere ontvangers, komma-gescheiden). `NTFY_TOPIC` wordt ook gebruikt als die bestaat.
+
+## Testen
+1. **Actions → SSH woning-monitor → Run workflow → "alleen testmail"**: jullie krijgen allebei een testmail.
+2. Nog een keer met **"controle nu"**. De eerste keer wordt het huidige aanbod als nulmeting opgeslagen
+   (geen mail). In het log staat bijv. `12 aanbiedingen gevonden (methode: json)`.
+3. Staat er `0 aanbiedingen gevonden`? Download onderaan de run het bestand **ssh-debug**
+   (schermafbeeldingen en wat de site terugstuurde) en stuur het naar Claude.
+
+## Goed om te weten
+- Lukt het drie keer achter elkaar niet om aanbod te lezen, dan krijg je één waarschuwingsmail.
+- Een mislukte controle telt nooit als "niets nieuw"; de opgeslagen lijst blijft dan staan.

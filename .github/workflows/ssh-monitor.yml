@@ -1,0 +1,78 @@
+name: SSH woning-monitor
+
+on:
+  schedule:
+    # In UTC. Het script draait alleen om ca. 09:00 en 13:00 Amsterdamse tijd
+    # (zomer- en wintertijd); de andere tijdstippen slaat het over.
+    - cron: "55 6,7,10,11 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Wat wil je doen?"
+        type: choice
+        options:
+          - controle nu
+          - alleen testmail
+        default: controle nu
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ssh-monitor
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installeren
+        run: |
+          pip install -r requirements-ssh.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Aanbod controleren
+        env:
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO_SSH: ${{ secrets.MAIL_TO_SSH }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          if [ "${{ inputs.mode }}" = "alleen testmail" ]; then
+            python ssh_monitor.py --test-notify
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python ssh_monitor.py --force
+          else
+            python ssh_monitor.py
+          fi
+
+      - name: Debugbestanden bewaren
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssh-debug
+          path: ssh_debug/
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Status opslaan
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain ssh_state.json)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add ssh_state.json
+            git commit -m "Update SSH-monitor-status"
+            git pull --rebase --autostash || true
+            git push
+          fi
