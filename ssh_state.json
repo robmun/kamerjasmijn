@@ -124,6 +124,16 @@
  },
  "runs": [
   {
+   "at": "2026-10-09T19:01+02:00",
+   "found": 21,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 21"
+   ],
+   "method": "dom"
+  },
+  {
    "at": "2026-10-09T18:45+02:00",
    "found": 21,
    "log": [
