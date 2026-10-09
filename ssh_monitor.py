@@ -157,6 +157,41 @@ def offer_from_json(d, source_url):
     return item
 
 
+def parse_card(txt):
+    """Haal adres, huur en details uit de tekst van een SSH-aanbodkaart."""
+    it = {"naam": txt[:200]}
+    m = re.match(r"(.+?),\s*([A-Z][\w' -]+?)\s+€", txt)
+    if m:
+        it["naam"], it["plaats"] = m.group(1).strip(), m.group(2).strip()
+    pats = {
+        "huur": r"€\s*([\d.]+,\d{2})\s*/\s*mnd",
+        "beschikbaar": r"start op\s*(\d{2}-\d{2}-\d{4})",
+        "m2": r"Oppervlakte:\s*([\d.,]+)\s*m",
+        "type": r"Type woning:\s*([^:]+?)(?=\s+[A-Z][a-z]+\b[^:]*:|$)",
+        "deadline": r"(?:Reageren tot|Reageer voor|Deadline|Sluit(?:ingsdatum)?)[:\s]*([\d-]{8,10}[^A-Z]*)",
+        "toewijzing": r"Manier van toewijz\w*:\s*([\w -]+?)(?=\s+[A-Z][a-z]+\b[^:]*:|$)|\b(Loting|Inschrijfduur|Wie het eerst komt|Direct huren|Voorrang[^.]*)",
+    }
+    for k, p in pats.items():
+        m = re.search(p, txt, re.I)
+        if m:
+            it[k] = clean(next(g for g in m.groups() if g))[:120]
+    if it.get("huur"):
+        it["huur"] = "€ " + it["huur"]
+    m = re.search(r"Huur bij max\.?huurtoeslag:\s*€\s*([\d.]+,\d{2})", txt)
+    if m:
+        it["voorwaarden"] = f"na max. huurtoeslag € {m.group(1)}"
+    return it
+
+
+def wanted(it, cities):
+    plaats = (it.get("plaats") or "").lower()
+    if not cities:
+        return True
+    if not plaats:  # plaats onbekend: liever melden dan missen
+        return True
+    return any(c in plaats for c in cities)
+
+
 # --------------------------------------------------------------------------- #
 # Browser
 # --------------------------------------------------------------------------- #
@@ -243,6 +278,14 @@ def scrape(user, pw, debug=True):
                 for _ in range(6):
                     page.mouse.wheel(0, 2500)
                     page.wait_for_timeout(500)
+                # knoppen als "Toon meer" / "Meer laden" doorklikken
+                for _ in range(15):
+                    more = page.get_by_role("button", name=re.compile(r"(toon|laad|meer|more|load)", re.I))
+                    if more.count() == 0 or not more.first.is_visible():
+                        break
+                    more.first.click(timeout=5000)
+                    page.wait_for_load_state("networkidle", timeout=20000)
+                    page.wait_for_timeout(800)
             except Exception as e:
                 log.append(f"{url}: {e.__class__.__name__}")
                 continue
@@ -262,7 +305,7 @@ def scrape(user, pw, debug=True):
                 if len(txt) < 8 or href.rstrip("/") in (u.rstrip("/") for u in OFFER_PAGES):
                     continue
                 key = "url:" + href.split("#")[0].rstrip("/")
-                dom_items.setdefault(key, {"key": key, "naam": txt[:200], "url": href, "bron": page.url})
+                dom_items.setdefault(key, {"key": key, **parse_card(txt), "url": href, "bron": page.url})
             if debug:
                 DEBUG_DIR.mkdir(exist_ok=True)
                 slug = re.sub(r"[^a-z0-9]+", "-", urlparse(page.url).path.lower()).strip("-") or "home"
@@ -445,13 +488,17 @@ def main():
         sys.exit(1)
     state["fail_count"] = 0
 
-    known = state.get("items", {})
+    cities = [c.strip().lower() for c in (os.environ.get("SSH_CITIES") or "Utrecht").split(",") if c.strip()]
+    items = [i for i in items if wanted(i, cities)]
+    print(f"{len(items)} in {', '.join(cities) or 'alle plaatsen'}")
+    known = {k: v for k, v in state.get("items", {}).items() if wanted(v, cities)}
     first_run = not known
     new = [i for i in items if i["key"] not in known]
     pending = [k for k, v in known.items() if v.get("pending_mail")]
     for it in items:
         rec = known.get(it["key"], {"first_seen": today})
-        rec.update({"naam": it["naam"], "url": it.get("url", ""), "huur": it.get("huur", ""), "last_seen": today})
+        rec.update({"naam": it["naam"], "plaats": it.get("plaats", ""), "url": it.get("url", ""),
+                    "huur": it.get("huur", ""), "last_seen": today})
         known[it["key"]] = rec
     to_mail = [] if first_run else new + [i for i in items if i["key"] in pending and i not in new]
 
