@@ -48,7 +48,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_TO: ${{ secrets.MAIL_TO || 'robertmunnichs@gmail.com,jasmijnmunnichs@gmail.com' }}
         run: python monitor.py --test-notify
 
       - name: Elke 5 minuten controleren (ca. 5u40)
@@ -61,7 +61,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_TO: ${{ secrets.MAIL_TO || 'robertmunnichs@gmail.com,jasmijnmunnichs@gmail.com' }}
           GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name  "github-actions[bot]"

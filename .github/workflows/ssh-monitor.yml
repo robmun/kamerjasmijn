@@ -64,6 +64,9 @@ jobs:
       - name: Van der Huizen controleren
         if: always() && inputs.mode != 'alleen testbericht'
         env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO_SSH: ${{ secrets.MAIL_TO_SSH }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |

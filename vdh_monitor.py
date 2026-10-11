@@ -23,7 +23,9 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-from ssh_monitor import TZ, current_slot, telegram
+import os
+
+from ssh_monitor import TZ, current_slot, send_mail, telegram
 
 LIST_URL = "https://www.vanderhuizen.com/provincies/utrecht/utrecht-1"
 STATE_FILE = Path(__file__).with_name("vdh_state.json")
@@ -106,7 +108,7 @@ def describe(it, change=None):
                      ("voor", it.get("doelgroep")), ("let op", it.get("let_op"))):
         if v:
             lines.append(f"{label}: {escape(v)}")
-    lines.append(escape(it["url"]))
+    lines.append(f'<a href="{escape(it["url"])}">{escape(it["url"])}</a>')
     return "\n".join(lines)
 
 
@@ -167,8 +169,11 @@ def main():
         # Mislukte controle telt niet als 'niets nieuw'; niets wissen, na 3x één waarschuwing.
         state["fail_count"] = state.get("fail_count", 0) + 1
         if state["fail_count"] == 3:
-            telegram("⚠️ De Van der Huizen-monitor kon drie keer achter elkaar geen woningen lezen. "
-                     f"Kijk zelf even op {LIST_URL}")
+            warn = ("De Van der Huizen-monitor kon drie keer achter elkaar geen woningen lezen. "
+                    f"Kijk zelf even op {LIST_URL}")
+            telegram("⚠️ " + warn)
+            if os.environ.get("SMTP_USER"):
+                send_mail(f"[Utrecht Housing Alert] Van der Huizen-monitor leest niets — {today}", warn, f"<p>{warn}</p>")
         save_state(state)
         sys.exit(1)
     state["fail_count"] = 0
@@ -225,6 +230,14 @@ def main():
             parts.append(f"🔁 <b>{len(changed)} gewijzigd bij Van der Huizen</b>")
             parts += [describe(i, c) for i, c in changed]
         ok = telegram("\n\n".join(parts))
+        if os.environ.get("SMTP_USER"):
+            n_new, n_chg = len(to_send), len(changed)
+            subj = (f"[Utrecht Housing Alert] Van der Huizen: {n_new} nieuw"
+                    + (f", {n_chg} gewijzigd" if n_chg else "") + f" — {today}")
+            html = ("<div style='font-family:Arial,sans-serif;font-size:14px;line-height:1.5'>"
+                    + "".join(f"<p>{p}</p>" for p in parts).replace("\n", "<br>") + "</div>")
+            text = re.sub(r"<[^>]+>", "", "\n\n".join(parts))
+            ok = send_mail(subj, text, html) or ok
         for i in to_send:
             known[i["url"]]["pending"] = not ok
             if ok:
