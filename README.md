@@ -1,3 +1,39 @@
+# Woning-monitors Utrecht
+
+Drie monitors houden het woningaanbod in de gaten en melden nieuw aanbod.
+
+## Overzicht
+
+| Monitor | Website | Hoe vaak | Hoe uitgelezen | Meldt via |
+|---|---|---|---|---|
+| **Socius** | connect.sociuswonen.nl | **elke 5 minuten**, dag en nacht | inloggen met je account, pagina lezen (Python `requests`) | ntfy, Telegram, mail |
+| **SSH** | sshxl.nl | **2× per dag**: 1× 's ochtends (08–12 uur), 1× 's middags/avonds (12–23 uur) | inloggen in een onzichtbare Chrome-browser (Playwright), want de site werkt alleen in een browser | Telegram, mail |
+| **Van der Huizen** | vanderhuizen.com (Utrecht) | **2× per dag**, tegelijk met SSH | openbare pagina lezen, geen inlog (Python `requests`) | Telegram, mail |
+
+In de praktijk gebeurt de ochtendcontrole meestal tussen 08:00 en 09:00 en de middagcontrole
+tussen 12:00 en 13:00: de Socius-workflow geeft elk uur een seintje en de eerste keer binnen
+een dagdeel wordt er echt gecontroleerd. Tussen 23:00 en 08:00 controleren SSH en Van der Huizen niet.
+Alle tijden zijn Nederlandse tijd.
+
+**Wanneer krijg je een melding?**
+- Socius: een nieuwe kamer, of aanmelden is weer mogelijk (bijv. nieuwe hospiteer- of infoavond).
+- SSH: nieuw aanbod in Utrecht ten opzichte van de vorige controle.
+- Van der Huizen: een nieuwe woning of een gewijzigde huurprijs.
+- Storing: SSH en Van der Huizen sturen één waarschuwing als de site drie keer achter elkaar
+  niet te lezen is; Socius waarschuwt één keer als inloggen mislukt.
+
+**Meldkanalen**
+- **Mail** gaat standaard naar robertmunnichs@gmail.com en jasmijnmunnichs@gmail.com
+  (andere ontvangers: secret `MAIL_TO` voor Socius, `MAIL_TO_SSH` voor SSH en Van der Huizen).
+  Werkt alleen als `SMTP_USER` en `SMTP_PASSWORD` zijn ingesteld.
+- **Telegram** gaat naar de chat in `TELEGRAM_CHAT_ID`, voor alle drie dezelfde bot.
+- **ntfy** (pushmelding) alleen bij Socius, als `NTFY_TOPIC` is ingesteld.
+
+SSH- en Van der Huizen-meldingen bevatten een klikbare link naar de advertentie; Socius-meldingen
+noemen pand, kamernummer, m², huur en ingangsdatum.
+
+---
+
 # Socius kamer-monitor
 
 Controleert elke 5 minuten het aanbod op Socius Connect en stuurt een melding (ntfy,
@@ -100,16 +136,6 @@ gewijzigde huurprijs komt er een Telegram-bericht én een mail aan Robert en Jas
 ontvangers en secrets als de SSH-monitor) met huur (kaal en all-in), type, oppervlakte,
 beschikbaarheid, doelgroep en een klikbare link naar de advertentie. Kan hij drie keer achter
 elkaar niets lezen, dan volgt één waarschuwing via Telegram en mail. Status staat in `vdh_state.json`.
-
-## Meldingen in het kort
-| Monitor | Telegram | Mail aan Robert + Jasmijn | Andere ontvangers via |
-|---|---|---|---|
-| Socius | ✅ | ✅ | `MAIL_TO` |
-| SSH | ✅ | ✅ | `MAIL_TO_SSH` |
-| Van der Huizen | ✅ | ✅ | `MAIL_TO_SSH` |
-
-Mail werkt alleen als `SMTP_USER` en `SMTP_PASSWORD` zijn ingesteld.
-
 
 ## Hoe het draait (sinds 11-10-2026)
 GitHub voert geplande workflows vaak uren te laat uit. Daarom blijft de workflow
