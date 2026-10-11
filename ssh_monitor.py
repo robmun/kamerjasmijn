@@ -522,7 +522,7 @@ def main():
     run = {"at": now.isoformat(timespec="minutes"), "found": len(items), "method": method, "log": log}
     state.setdefault("runs", [])
     state["runs"] = ([run] + state["runs"])[:60]
-    if slot and not args.force:
+    if slot:  # ook bij een run die van buitenaf is gestart (cron-job.org)
         state["last_slot"] = f"{today}-{slot}"
 
     if not items:
