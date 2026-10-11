@@ -1,7 +1,7 @@
 # Socius kamer-monitor
 
-Controleert elke 5 minuten het aanbod op Socius Connect en stuurt een pushmelding
-(of Telegram/e-mail) zodra er een kamer vrijkomt waarvoor je je kunt aanmelden.
+Controleert elke 5 minuten het aanbod op Socius Connect en stuurt een melding (ntfy,
+Telegram en mail aan Robert en Jasmijn) zodra er een kamer vrijkomt waarvoor je je kunt aanmelden.
 
 ## Installatie (± 10 minuten)
 
@@ -30,9 +30,11 @@ en voeg toe:
 | `SOCIUS_PASSWORD` | je wachtwoord |
 | `NTFY_TOPIC` | de topicnaam uit stap 1 |
 
-Optioneel, extra kanalen:
-- **E-mail (Gmail):** `SMTP_USER` (je Gmail-adres), `SMTP_PASSWORD` (een *app-wachtwoord*,
-  aan te maken via myaccount.google.com → Beveiliging → App-wachtwoorden), `MAIL_TO` (ontvanger(s), komma-gescheiden).
+Extra kanalen:
+- **E-mail (Gmail):** `SMTP_USER` (je Gmail-adres) en `SMTP_PASSWORD` (een *app-wachtwoord*,
+  aan te maken via myaccount.google.com → Beveiliging → App-wachtwoorden). De mail gaat standaard
+  naar **robertmunnichs@gmail.com en jasmijnmunnichs@gmail.com**; met het secret `MAIL_TO`
+  (komma-gescheiden) kies je andere ontvangers.
 - **Telegram:** `TELEGRAM_BOT_TOKEN` en `TELEGRAM_CHAT_ID`.
 
 ### 4. Testen
@@ -59,8 +61,9 @@ Daarna draait hij vanzelf elke ~5 minuten.
 
 # SSH woning-monitor
 
-`ssh_monitor.py` controleert het aanbod op sshxl.nl rond **09:00 en 13:00** (Amsterdamse tijd)
-en mailt Robert en Jasmijn zodra er nieuw aanbod bij komt. De SSH-site werkt alleen in een
+`ssh_monitor.py` controleert het aanbod op sshxl.nl één keer per dagdeel (**ochtend 08–12 uur,
+middag 12–23 uur**, Amsterdamse tijd) en stuurt bij nieuw aanbod een Telegram-bericht én een mail
+aan Robert en Jasmijn, met klikbare links naar de advertenties. De SSH-site werkt alleen in een
 browser, dus het script gebruikt een onzichtbare Chrome-browser (Playwright).
 
 ## Installeren
@@ -72,10 +75,12 @@ browser, dus het script gebruikt een onzichtbare Chrome-browser (Playwright).
 | `SSH_USERNAME` | je gebruikersnaam/e-mail voor sshxl.nl |
 | `SSH_PASSWORD` | je SSH-wachtwoord |
 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | dezelfde als voor de Socius-monitor (meldingen via Telegram) |
-| `SMTP_USER` | optioneel, voor e-mail: robertmunnichs@gmail.com |
-| `SMTP_PASSWORD` | optioneel, voor e-mail: een Gmail-app-wachtwoord |
+| `SMTP_USER` | voor e-mail: robertmunnichs@gmail.com (de afzender) |
+| `SMTP_PASSWORD` | voor e-mail: een Gmail-app-wachtwoord |
 
+De mail gaat standaard naar robertmunnichs@gmail.com en jasmijnmunnichs@gmail.com.
 Optioneel: `MAIL_TO_SSH` (andere ontvangers, komma-gescheiden). `NTFY_TOPIC` wordt ook gebruikt als die bestaat.
+Zonder `SMTP_USER`/`SMTP_PASSWORD` komt er alleen een Telegram-bericht.
 
 ## Testen
 1. **Actions → SSH woning-monitor → Run workflow → "alleen testbericht"**: er komt een testbericht in Telegram.
@@ -91,8 +96,19 @@ Optioneel: `MAIL_TO_SSH` (andere ontvangers, komma-gescheiden). `NTFY_TOPIC` wor
 ## Van der Huizen
 `vdh_monitor.py` draait in dezelfde workflow (stap **Van der Huizen controleren**) en leest
 https://www.vanderhuizen.com/provincies/utrecht/utrecht-1. Bij een nieuwe woning of een
-gewijzigde huurprijs komt er een Telegram-bericht met huur (kaal en all-in), type, oppervlakte,
-beschikbaarheid, doelgroep en de link naar de advertentie. Status staat in `vdh_state.json`.
+gewijzigde huurprijs komt er een Telegram-bericht én een mail aan Robert en Jasmijn (zelfde
+ontvangers en secrets als de SSH-monitor) met huur (kaal en all-in), type, oppervlakte,
+beschikbaarheid, doelgroep en een klikbare link naar de advertentie. Kan hij drie keer achter
+elkaar niets lezen, dan volgt één waarschuwing via Telegram en mail. Status staat in `vdh_state.json`.
+
+## Meldingen in het kort
+| Monitor | Telegram | Mail aan Robert + Jasmijn | Andere ontvangers via |
+|---|---|---|---|
+| Socius | ✅ | ✅ | `MAIL_TO` |
+| SSH | ✅ | ✅ | `MAIL_TO_SSH` |
+| Van der Huizen | ✅ | ✅ | `MAIL_TO_SSH` |
+
+Mail werkt alleen als `SMTP_USER` en `SMTP_PASSWORD` zijn ingesteld.
 
 
 ## Hoe het draait (sinds 11-10-2026)

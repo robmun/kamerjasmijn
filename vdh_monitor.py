@@ -3,10 +3,11 @@
 Van der Huizen woning-monitor (Utrecht).
 
 Leest https://www.vanderhuizen.com/provincies/utrecht/utrecht-1, vergelijkt met
-vdh_state.json en stuurt via Telegram (zelfde bot als de andere monitors) een
-bericht bij nieuwe woningen of een gewijzigde huurprijs, met per woning de link.
+vdh_state.json en stuurt via Telegram (zelfde bot als de andere monitors) en per
+mail (MAIL_TO_SSH, standaard Robert en Jasmijn) een bericht bij nieuwe woningen of
+een gewijzigde huurprijs, met per woning een klikbare link.
 
-Draait in dezelfde GitHub-workflow als de SSH-monitor, rond 09:00 en 13:00.
+Draait in dezelfde GitHub-workflow als de SSH-monitor, één keer per dagdeel.
 
   python vdh_monitor.py --force         controle nu uitvoeren
   python vdh_monitor.py --test-file f   parser testen op een opgeslagen pagina
