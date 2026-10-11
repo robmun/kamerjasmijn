@@ -2,9 +2,11 @@ name: Woning-monitor (SSH + Van der Huizen)
 
 on:
   schedule:
-    # In UTC. Het script draait alleen om ca. 09:00 en 13:00 Amsterdamse tijd
-    # (zomer- en wintertijd); de andere tijdstippen slaat het over.
+    # In UTC. Rond 09:00 en 13:00 Amsterdamse tijd, met extra reservetijdstippen
+    # omdat GitHub geplande runs soms uren vertraagt of overslaat. Het script
+    # controleert per dagdeel (ochtend/middag) maar één keer.
     - cron: "55 6,7,10,11 * * *"
+    - cron: "25 8,9,13,15,17 * * *"
   workflow_dispatch:
     inputs:
       mode:

@@ -466,9 +466,11 @@ def save_state(state):
 
 
 def current_slot(now):
-    if now.hour in (8, 9):
+    """Ochtend- of middagcontrole. Ruim venster, want GitHub start geplande
+    runs soms uren te laat; per venster wordt maar één keer gecontroleerd."""
+    if 8 <= now.hour < 12:
         return "ochtend"
-    if now.hour in (12, 13):
+    if 12 <= now.hour < 23:
         return "middag"
     return None
 
