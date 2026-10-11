@@ -1,6 +1,6 @@
 # Socius kamer-monitor
 
-Controleert elke ~5 minuten het aanbod op Socius Connect en stuurt een pushmelding
+Controleert elke 5 minuten het aanbod op Socius Connect en stuurt een pushmelding
 (of Telegram/e-mail) zodra er een kamer vrijkomt waarvoor je je kunt aanmelden.
 
 ## Installatie (± 10 minuten)
@@ -93,3 +93,13 @@ Optioneel: `MAIL_TO_SSH` (andere ontvangers, komma-gescheiden). `NTFY_TOPIC` wor
 https://www.vanderhuizen.com/provincies/utrecht/utrecht-1. Bij een nieuwe woning of een
 gewijzigde huurprijs komt er een Telegram-bericht met huur (kaal en all-in), type, oppervlakte,
 beschikbaarheid, doelgroep en de link naar de advertentie. Status staat in `vdh_state.json`.
+
+
+## Hoe het draait (sinds 11-10-2026)
+GitHub voert geplande workflows vaak uren te laat uit. Daarom blijft de workflow
+**Socius kamer-monitor** zelf doorlopen: hij controleert Socius elke 5 minuten, start
+elk uur de **Woning-monitor** (die per dagdeel maar één keer echt controleert) en start
+zichzelf na ca. 5u40 opnieuw. De cron-tijden in beide workflows zijn alleen reserve.
+
+- Stoppen: **Actions → Socius kamer-monitor → ⋯ → Disable workflow** (en de lopende run annuleren).
+- Weer starten: **Enable workflow** en daarna **Run workflow**.

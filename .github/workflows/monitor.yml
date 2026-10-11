@@ -1,8 +1,14 @@
 name: Socius kamer-monitor
 
+# Deze workflow blijft zelf doorlopen: hij controleert Socius elke 5 minuten,
+# geeft elk uur de woning-monitor (SSH + Van der Huizen) een seintje en start
+# zichzelf na ca. 5 uur en 40 minuten opnieuw. Zo zijn we niet afhankelijk van
+# de (onbetrouwbare) planning van GitHub. De cron hieronder is alleen een
+# reserve om de lus weer op gang te brengen als hij ooit stopt.
+
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "17 */2 * * *"
   workflow_dispatch:
     inputs:
       test_notify:
@@ -12,6 +18,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: socius-monitor
@@ -20,7 +27,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v4
 
@@ -31,7 +38,8 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Aanbod controleren
+      - name: Testmelding
+        if: inputs.test_notify == true
         env:
           SOCIUS_USERNAME: ${{ secrets.SOCIUS_USERNAME }}
           SOCIUS_PASSWORD: ${{ secrets.SOCIUS_PASSWORD }}
@@ -41,21 +49,48 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           MAIL_TO: ${{ secrets.MAIL_TO }}
-        run: |
-          if [ "${{ inputs.test_notify }}" = "true" ]; then
-            python monitor.py --test-notify
-          else
-            python monitor.py
-          fi
+        run: python monitor.py --test-notify
 
-      - name: Status opslaan
-        if: always()
+      - name: Elke 5 minuten controleren (ca. 5u40)
+        if: inputs.test_notify != true
+        env:
+          SOCIUS_USERNAME: ${{ secrets.SOCIUS_USERNAME }}
+          SOCIUS_PASSWORD: ${{ secrets.SOCIUS_PASSWORD }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -n "$(git status --porcelain state.json)" ]; then
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add state.json
-            git commit -m "Update monitor-status"
-            git pull --rebase --autostash || true
-            git push
-          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          end=$((SECONDS + 340*60))
+          last_ping=-3600
+          while [ $SECONDS -lt $end ]; do
+            echo "=== $(TZ=Europe/Amsterdam date '+%d-%m %H:%M') ==="
+            python monitor.py || echo "controle mislukt, volgende keer opnieuw"
+            if [ -n "$(git status --porcelain state.json)" ]; then
+              git add state.json
+              git commit -q -m "Update monitor-status"
+              for i in 1 2 3; do
+                git pull -q --rebase --autostash && git push -q && break
+                sleep 5
+              done
+            fi
+            # elk uur een seintje aan de woning-monitor; die controleert zelf
+            # maar één keer per dagdeel (ochtend/middag)
+            if [ $((SECONDS - last_ping)) -ge 3600 ]; then
+              gh workflow run ssh-monitor.yml -R "$GITHUB_REPOSITORY" -f mode=gepland \
+                && echo "woning-monitor gestart" || echo "woning-monitor starten mislukt"
+              last_ping=$SECONDS
+            fi
+            sleep 300
+          done
+
+      - name: Opnieuw starten
+        if: always() && inputs.test_notify != true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run monitor.yml -R "$GITHUB_REPOSITORY" --ref main

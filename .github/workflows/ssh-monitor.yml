@@ -2,9 +2,9 @@ name: Woning-monitor (SSH + Van der Huizen)
 
 on:
   schedule:
-    # In UTC. Rond 09:00 en 13:00 Amsterdamse tijd, met extra reservetijdstippen
-    # omdat GitHub geplande runs soms uren vertraagt of overslaat. Het script
-    # controleert per dagdeel (ochtend/middag) maar één keer.
+    # Wordt elk uur gestart door de Socius-workflow (mode "gepland"). Deze tijden
+    # (UTC) zijn alleen reserve. Het script controleert per dagdeel
+    # (ochtend 08-12 uur, middag 12-23 uur) maar één keer.
     - cron: "55 6,7,10,11 * * *"
     - cron: "25 8,9,13,15,17 * * *"
   workflow_dispatch:
@@ -15,6 +15,7 @@ on:
         options:
           - controle nu
           - alleen testbericht
+          - gepland
         default: controle nu
 
 permissions:
@@ -54,7 +55,7 @@ jobs:
         run: |
           if [ "${{ inputs.mode }}" = "alleen testbericht" ]; then
             python ssh_monitor.py --test-notify
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.mode }}" != "gepland" ]; then
             python ssh_monitor.py --force
           else
             python ssh_monitor.py
@@ -66,7 +67,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.mode }}" != "gepland" ]; then
             python vdh_monitor.py --force
           else
             python vdh_monitor.py
