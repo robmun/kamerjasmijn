@@ -332,7 +332,18 @@
    "url": "https://www.sshxl.nl/nl/aanbod/1478534-ina-boudier-bakkerlaan-109-1-k834"
   }
  },
+ "last_slot": "2026-10-11-middag",
  "runs": [
+  {
+   "at": "2026-10-11T12:44+02:00",
+   "found": 36,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 36"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-11T12:23+02:00",
    "found": 36,

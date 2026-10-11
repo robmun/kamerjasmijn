@@ -7,10 +7,10 @@
    "huur": "1.150,00",
    "label": "",
    "last_seen": "2026-10-09",
-   "missing": 1,
+   "missing": 2,
    "pending": false,
    "plaats": "Utrecht",
-   "status": "available",
+   "status": "removed",
    "type": "Appartement 2-kamer",
    "url": "https://www.vanderhuizen.com/huurwoningen/appartement-2-kamer/te-huur/utrecht-1/centrum/2-kamer-appartement-in-utrecht-centrum-te-huur"
   },
@@ -202,7 +202,13 @@
    "url": "https://www.vanderhuizen.com/huurwoningen/studio/te-huur/utrecht-1/studio-te-huur-aan-de-amsterdamsestraatweg-te-utrecht"
   }
  },
+ "last_slot": "2026-10-11-middag",
  "runs": [
+  {
+   "at": "2026-10-11T12:45+02:00",
+   "error": "",
+   "found": 14
+  },
   {
    "at": "2026-10-11T12:24+02:00",
    "error": "",
