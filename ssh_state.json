@@ -333,6 +333,16 @@
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478526-bisschopssteeg-481-k1"
   },
+  "url:https://www.sshxl.nl/nl/aanbod/1478527-van-lieflandlaan-130-k22": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 646,07",
+   "last_seen": "2026-10-12",
+   "naam": "Van Lieflandlaan 130 k22",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478527-van-lieflandlaan-130-k22"
+  },
   "url:https://www.sshxl.nl/nl/aanbod/1478528-cambridgelaan-351": {
    "first_seen": "2026-10-11",
    "huur": "€ 701,63",
@@ -432,8 +442,18 @@
    "url": "https://www.sshxl.nl/nl/aanbod/1478544-opaalweg-228-k6"
   }
  },
- "last_slot": "2026-10-12-ochtend",
+ "last_slot": "2026-10-12-middag",
  "runs": [
+  {
+   "at": "2026-10-12T12:33+02:00",
+   "found": 45,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 45"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-12T08:52+02:00",
    "found": 44,
