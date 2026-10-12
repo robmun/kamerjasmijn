@@ -9,15 +9,55 @@
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1477678-alexander-numankade-3e-k1"
   },
+  "url:https://www.sshxl.nl/nl/aanbod/1478279-ina-boudier-bakkerlaan-81-k1350": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 463,12",
+   "last_seen": "2026-10-12",
+   "naam": "Ina Boudier-Bakkerlaan 81 k1350",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478279-ina-boudier-bakkerlaan-81-k1350"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478317-hondsrug-213-k1": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 533,48",
+   "last_seen": "2026-10-12",
+   "naam": "Hondsrug 213 k1",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478317-hondsrug-213-k1"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478320-stadhouderslaan-47-k22": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 618,78",
+   "last_seen": "2026-10-12",
+   "naam": "Stadhouderslaan 47 k22",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478320-stadhouderslaan-47-k22"
+  },
   "url:https://www.sshxl.nl/nl/aanbod/1478422-cambridgelaan-587-k1": {
    "first_seen": "2026-10-11",
    "huur": "€ 764,53",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Cambridgelaan 587 k1",
    "notified": "2026-10-11",
    "pending_mail": false,
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478422-cambridgelaan-587-k1"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478435-biltstraat-449b": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 1104,66",
+   "last_seen": "2026-10-12",
+   "naam": "Biltstraat 449B",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478435-biltstraat-449b"
   },
   "url:https://www.sshxl.nl/nl/aanbod/1478448-van-lieflandlaan-30-k04": {
    "first_seen": "2026-10-09",
@@ -70,7 +110,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478462-parkstraat-13-k23": {
    "first_seen": "2026-10-11",
    "huur": "€ 611,75",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Parkstraat 13 k23",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -92,6 +132,16 @@
    "naam": "Salamancapad 245",
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478469-salamancapad-245"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478470-parkstraat-47-k22": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 813,17",
+   "last_seen": "2026-10-12",
+   "naam": "Parkstraat 47 k22",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478470-parkstraat-47-k22"
   },
   "url:https://www.sshxl.nl/nl/aanbod/1478472-enny-vredelaan-351": {
    "first_seen": "2026-10-09",
@@ -128,7 +178,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478483-salamancapad-95": {
    "first_seen": "2026-10-11",
    "huur": "€ 829,22",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Salamancapad 95",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -138,17 +188,37 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478484-prins-hendriklaan-17-k23": {
    "first_seen": "2026-10-11",
    "huur": "€ 595,60",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Prins Hendriklaan 17 k23",
    "notified": "2026-10-11",
    "pending_mail": false,
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478484-prins-hendriklaan-17-k23"
   },
+  "url:https://www.sshxl.nl/nl/aanbod/1478485-bemuurde-weerd o.z.-7-k22": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 588,98",
+   "last_seen": "2026-10-12",
+   "naam": "Bemuurde Weerd O.Z. 7 k22",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478485-bemuurde-weerd o.z.-7-k22"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478486-europaplein-328": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 754,60",
+   "last_seen": "2026-10-12",
+   "naam": "Europaplein 328",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478486-europaplein-328"
+  },
   "url:https://www.sshxl.nl/nl/aanbod/1478491-oeral-64-k7": {
    "first_seen": "2026-10-11",
    "huur": "€ 553,47",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Oeral 64 k7",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -158,7 +228,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478494-burgemeester-fockema andreaeplein-300": {
    "first_seen": "2026-10-11",
    "huur": "€ 800,03",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Burgemeester Fockema Andreaeplein 300",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -168,7 +238,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478498-ina-boudier-bakkerlaan-181-k1631": {
    "first_seen": "2026-10-11",
    "huur": "€ 540,04",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Ina Boudier-Bakkerlaan 181 k1631",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -178,7 +248,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478500-oudwijk-21-k03": {
    "first_seen": "2026-10-11",
    "huur": "€ 625,59",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Oudwijk 21 k03",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -198,7 +268,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478508-cambridgelaan-271-k4": {
    "first_seen": "2026-10-11",
    "huur": "€ 763,38",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Cambridgelaan 271 k4",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -208,7 +278,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478509-cambridgelaan-811-k5": {
    "first_seen": "2026-10-11",
    "huur": "€ 729,84",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Cambridgelaan 811 k5",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -218,7 +288,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478512-ina-boudier-bakkerlaan-21-3-k164": {
    "first_seen": "2026-10-11",
    "huur": "€ 456,31",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Ina Boudier-Bakkerlaan 21 3 k164",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -228,7 +298,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478513-oudwijk-21-k1.10": {
    "first_seen": "2026-10-11",
    "huur": "€ 614,59",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Oudwijk 21 k1.10",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -246,7 +316,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478518-gerbrandypad-15": {
    "first_seen": "2026-10-11",
    "huur": "€ 751,05",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Gerbrandypad 15",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -256,7 +326,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478526-bisschopssteeg-481-k1": {
    "first_seen": "2026-10-11",
    "huur": "€ 598,29",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Bisschopssteeg 481 k1",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -266,7 +336,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478528-cambridgelaan-351": {
    "first_seen": "2026-10-11",
    "huur": "€ 701,63",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Cambridgelaan 351",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -276,7 +346,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478529-ina-boudier-bakkerlaan-21-3-k178": {
    "first_seen": "2026-10-11",
    "huur": "€ 456,31",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Ina Boudier-Bakkerlaan 21 3 k178",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -286,7 +356,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478530-opaalweg-246-k2": {
    "first_seen": "2026-10-11",
    "huur": "€ 644,17",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Opaalweg 246 k2",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -296,7 +366,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478531-ina-boudier-bakkerlaan-41-3-k379": {
    "first_seen": "2026-10-11",
    "huur": "€ 418,25",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Ina Boudier-Bakkerlaan 41 3 k379",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -306,7 +376,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478532-moskeeplein-61": {
    "first_seen": "2026-10-11",
    "huur": "€ 1224,93",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Moskeeplein 61",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -316,7 +386,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478533-ina-boudier-bakkerlaan-47-k1066": {
    "first_seen": "2026-10-11",
    "huur": "€ 473,76",
-   "last_seen": "2026-10-11",
+   "last_seen": "2026-10-12",
    "naam": "Ina Boudier-Bakkerlaan 47 k1066",
    "notified": "2026-10-11",
    "pending_mail": false,
@@ -330,10 +400,50 @@
    "naam": "Ina Boudier-Bakkerlaan 109 1 k834",
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478534-ina-boudier-bakkerlaan-109-1-k834"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478537-burgemeester-fockema andreaeplein-135": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 800,03",
+   "last_seen": "2026-10-12",
+   "naam": "Burgemeester Fockema Andreaeplein 135",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478537-burgemeester-fockema andreaeplein-135"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478539-willem-barentszstraat-45-k32": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 466,66",
+   "last_seen": "2026-10-12",
+   "naam": "Willem Barentszstraat 45 k32",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478539-willem-barentszstraat-45-k32"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478544-opaalweg-228-k6": {
+   "first_seen": "2026-10-12",
+   "huur": "€ 644,17",
+   "last_seen": "2026-10-12",
+   "naam": "Opaalweg 228 k6",
+   "notified": "2026-10-12",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478544-opaalweg-228-k6"
   }
  },
- "last_slot": "2026-10-11-middag",
+ "last_slot": "2026-10-12-ochtend",
  "runs": [
+  {
+   "at": "2026-10-12T08:52+02:00",
+   "found": 44,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 44"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-11T12:44+02:00",
    "found": 36,
