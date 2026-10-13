@@ -580,10 +580,30 @@
    "pending_mail": false,
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478606-parkstraat-8-k01"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478640-van-lieflandlaan-128-k24": {
+   "first_seen": "2026-10-13",
+   "huur": "€ 669,48",
+   "last_seen": "2026-10-13",
+   "naam": "Van Lieflandlaan 128 k24",
+   "notified": "2026-10-13",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478640-van-lieflandlaan-128-k24"
   }
  },
- "last_slot": "2026-10-13-ochtend",
+ "last_slot": "2026-10-13-middag",
  "runs": [
+  {
+   "at": "2026-10-13T12:23+02:00",
+   "found": 51,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 51"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-13T08:42+02:00",
    "found": 49,
