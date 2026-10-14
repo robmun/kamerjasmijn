@@ -221,8 +221,13 @@
    "url": "https://www.vanderhuizen.com/huurwoningen/studio/te-huur/utrecht-1/studio-te-huur-aan-de-amsterdamsestraatweg-te-utrecht"
   }
  },
- "last_slot": "2026-10-14-ochtend",
+ "last_slot": "2026-10-14-middag",
  "runs": [
+  {
+   "at": "2026-10-14T12:13+02:00",
+   "error": "",
+   "found": 15
+  },
   {
    "at": "2026-10-14T08:31+02:00",
    "error": "",

@@ -652,8 +652,18 @@
    "url": "https://www.sshxl.nl/nl/aanbod/1478649-willem-schuylenburglaan-92-k11"
   }
  },
- "last_slot": "2026-10-14-ochtend",
+ "last_slot": "2026-10-14-middag",
  "runs": [
+  {
+   "at": "2026-10-14T12:12+02:00",
+   "found": 39,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 39"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-14T08:31+02:00",
    "found": 39,
