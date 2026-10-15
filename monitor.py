@@ -36,6 +36,8 @@ LOGIN_PAGE = BASE + "/"
 LOGIN_POST = BASE + "/account/do_login"
 AANBOD_URL = BASE + "/kamer_vinden/aanbod/overzicht/"
 STATE_FILE = Path(__file__).with_name("state.json")
+LOG_FILE = Path(__file__).with_name("aanbod_log.jsonl")
+LOG_MAX_LINES = 2000
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/129.0 Safari/537.36")
@@ -90,6 +92,7 @@ def parse(html):
     soup = BeautifulSoup(html, "html.parser")
     projects = {}
     available = []
+    parse.all_rows = []  # alle regels, ook niet-claimbare (voor het logboek)
 
     for panel in soup.select("div.panel-body"):
         h2 = panel.find("h2")
@@ -123,6 +126,12 @@ def parse(html):
                     or "geclaimed" in action_text.lower()
                     or "vol" == action_text.lower()
                 )
+                parse.all_rows.append({
+                    "project": name, "section": section,
+                    "cells": values[:-1], "action": action_text,
+                    "action_tag": action.name if action else None,
+                    "classes": classes, "claimbaar": not disabled,
+                })
                 if disabled:
                     continue
                 info = dict(zip(headers, values))
@@ -224,6 +233,29 @@ def save_state(state):
     STATE_FILE.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n")
 
 
+def write_log(projects, rows, state):
+    """Schrijf een regel naar aanbod_log.jsonl als het aanbod verandert.
+
+    Zo is achteraf te zien wat de monitor zag (ook kamers die niet claimbaar
+    waren), zonder de GitHub-logs nodig te hebben.
+    """
+    snapshot = {"projects": projects, "rows": rows}
+    digest = hashlib.sha1(json.dumps(snapshot, sort_keys=True,
+                                     ensure_ascii=False).encode()).hexdigest()[:16]
+    if state.get("last_snapshot") == digest:
+        return
+    state["last_snapshot"] = digest
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    entry = {"tijd": datetime.now(ZoneInfo("Europe/Amsterdam"))
+             .strftime("%Y-%m-%d %H:%M:%S"), **snapshot}
+    lines = []
+    if LOG_FILE.exists():
+        lines = LOG_FILE.read_text(encoding="utf-8").splitlines()
+    lines.append(json.dumps(entry, ensure_ascii=False))
+    LOG_FILE.write_text("\n".join(lines[-LOG_MAX_LINES:]) + "\n", encoding="utf-8")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--test-file", help="lees een opgeslagen HTML-pagina i.p.v. inloggen")
@@ -260,6 +292,9 @@ def main():
     projects, available = parse(html)
     if not projects:
         print("Waarschuwing: geen projecten gevonden; is de pagina veranderd?")
+
+    if not args.test_file:
+        write_log(projects, getattr(parse, "all_rows", []), state)
 
     print(f"{len(projects)} panden gecontroleerd, {len(available)} regels beschikbaar.")
     for name, open_ in projects.items():

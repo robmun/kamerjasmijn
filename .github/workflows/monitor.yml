@@ -1,6 +1,6 @@
 name: Socius kamer-monitor
 
-# Deze workflow blijft zelf doorlopen: hij controleert Socius elke 5 minuten,
+# Deze workflow blijft zelf doorlopen: hij controleert Socius elke minuut,
 # geeft elk uur de woning-monitor (SSH + Van der Huizen) een seintje en start
 # zichzelf na ca. 5 uur en 40 minuten opnieuw. Zo zijn we niet afhankelijk van
 # de (onbetrouwbare) planning van GitHub. De cron hieronder is alleen een
@@ -51,7 +51,7 @@ jobs:
           MAIL_TO: ${{ secrets.MAIL_TO || 'robertmunnichs@gmail.com,jasmijnmunnichs@gmail.com' }}
         run: python monitor.py --test-notify
 
-      - name: Elke 5 minuten controleren (ca. 5u40)
+      - name: Elke minuut controleren (ca. 5u40)
         if: inputs.test_notify != true
         env:
           SOCIUS_USERNAME: ${{ secrets.SOCIUS_USERNAME }}
@@ -71,8 +71,8 @@ jobs:
           while [ $SECONDS -lt $end ]; do
             echo "=== $(TZ=Europe/Amsterdam date '+%d-%m %H:%M') ==="
             python monitor.py || echo "controle mislukt, volgende keer opnieuw"
-            if [ -n "$(git status --porcelain state.json)" ]; then
-              git add state.json
+            if [ -n "$(git status --porcelain state.json aanbod_log.jsonl)" ]; then
+              git add state.json aanbod_log.jsonl
               git commit -q -m "Update monitor-status"
               for i in 1 2 3; do
                 git pull -q --rebase --autostash && git push -q && break
@@ -86,7 +86,7 @@ jobs:
                 && echo "woning-monitor gestart" || echo "woning-monitor starten mislukt"
               last_ping=$SECONDS
             fi
-            sleep 300
+            sleep 60
           done
 
       - name: Opnieuw starten

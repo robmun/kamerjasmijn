@@ -6,7 +6,7 @@ Drie monitors houden het woningaanbod in de gaten en melden nieuw aanbod.
 
 | Monitor | Website | Hoe vaak | Hoe uitgelezen | Meldt via |
 |---|---|---|---|---|
-| **Socius** | connect.sociuswonen.nl | **elke 5 minuten**, dag en nacht | inloggen met je account, pagina lezen (Python `requests`) | ntfy, Telegram, mail |
+| **Socius** | connect.sociuswonen.nl | **elke minuut**, dag en nacht | inloggen met je account, pagina lezen (Python `requests`) | ntfy, Telegram, mail |
 | **SSH** | sshxl.nl | **2× per dag**: 1× 's ochtends (08–12 uur), 1× 's middags/avonds (12–23 uur) | inloggen in een onzichtbare Chrome-browser (Playwright), want de site werkt alleen in een browser | Telegram, mail |
 | **Van der Huizen** | vanderhuizen.com (Utrecht) | **2× per dag**, tegelijk met SSH | openbare pagina lezen, geen inlog (Python `requests`) | Telegram, mail |
 
@@ -36,7 +36,7 @@ noemen pand, kamernummer, m², huur en ingangsdatum.
 
 # Socius kamer-monitor
 
-Controleert elke 5 minuten het aanbod op Socius Connect en stuurt een melding (ntfy,
+Controleert elke minuut het aanbod op Socius Connect en stuurt een melding (ntfy,
 Telegram en mail aan Robert en Jasmijn) zodra er een kamer vrijkomt waarvoor je je kunt aanmelden.
 
 ## Installatie (± 10 minuten)
@@ -79,7 +79,7 @@ Extra kanalen:
 3. Draai hem nog een keer zonder vinkje. Klik op de run → stap **Aanbod controleren**:
    je hoort te zien `3 panden gecontroleerd, ...`. Zie je "Inloggen mislukt", stuur die regel dan door.
 
-Daarna draait hij vanzelf elke ~5 minuten.
+Daarna draait hij vanzelf elke minuut.
 
 ## Wat je krijgt
 - 🏠 **Nieuwe kamer** — pand, kamernummer, m², huur en ingangsdatum. Je krijgt per kamer één melding.
@@ -139,9 +139,16 @@ elkaar niets lezen, dan volgt één waarschuwing via Telegram en mail. Status st
 
 ## Hoe het draait (sinds 11-10-2026)
 GitHub voert geplande workflows vaak uren te laat uit. Daarom blijft de workflow
-**Socius kamer-monitor** zelf doorlopen: hij controleert Socius elke 5 minuten, start
+**Socius kamer-monitor** zelf doorlopen: hij controleert Socius elke minuut, start
 elk uur de **Woning-monitor** (die per dagdeel maar één keer echt controleert) en start
 zichzelf na ca. 5u40 opnieuw. De cron-tijden in beide workflows zijn alleen reserve.
 
 - Stoppen: **Actions → Socius kamer-monitor → ⋯ → Disable workflow** (en de lopende run annuleren).
 - Weer starten: **Enable workflow** en daarna **Run workflow**.
+
+### Logboek van het aanbod
+
+Bij elke wijziging in het Socius-aanbod schrijft de monitor een regel naar
+`aanbod_log.jsonl`: tijdstip, alle panden en alle kamerregels, ook kamers die niet
+claimbaar zijn (met de tekst van de knop). Zo is achteraf te zien wat de monitor
+zag. Het bestand houdt de laatste 2000 wijzigingen bij.
