@@ -4,7 +4,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1477678-alexander-numankade-3e-k1": {
    "first_seen": "2026-10-09",
    "huur": "€ 550,66",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Alexander Numankade 3E k1",
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1477678-alexander-numankade-3e-k1"
@@ -12,7 +12,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1477930-piramidedreef-5-ak0.2": {
    "first_seen": "2026-10-14",
    "huur": "€ 505,11",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Piramidedreef 5 Ak0.2",
    "notified": "2026-10-14",
    "pending_mail": false,
@@ -52,7 +52,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478324-europaplein-29": {
    "first_seen": "2026-10-15",
    "huur": "€ 912,64",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Europaplein 29",
    "notified": "2026-10-15",
    "pending_mail": false,
@@ -484,7 +484,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478538-ina-boudier-bakkerlaan-19-k19": {
    "first_seen": "2026-10-14",
    "huur": "€ 483,01",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Ina Boudier-Bakkerlaan 19 k19",
    "notified": "2026-10-14",
    "pending_mail": false,
@@ -611,10 +611,20 @@
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478606-parkstraat-8-k01"
   },
+  "url:https://www.sshxl.nl/nl/aanbod/1478608-opaalweg-254-k4": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 642,08",
+   "last_seen": "2026-10-16",
+   "naam": "Opaalweg 254 k4",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478608-opaalweg-254-k4"
+  },
   "url:https://www.sshxl.nl/nl/aanbod/1478610-europaplein-19": {
    "first_seen": "2026-10-14",
    "huur": "€ 754,60",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Europaplein 19",
    "notified": "2026-10-14",
    "pending_mail": false,
@@ -624,7 +634,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478611-nassaustraat-13-k24": {
    "first_seen": "2026-10-15",
    "huur": "€ 563,92",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Nassaustraat 13 k24",
    "notified": "2026-10-15",
    "pending_mail": false,
@@ -634,22 +644,122 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478616-gansstraat-157c-k32": {
    "first_seen": "2026-10-15",
    "huur": "€ 599,20",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Gansstraat 157C k32",
    "notified": "2026-10-15",
    "pending_mail": false,
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478616-gansstraat-157c-k32"
   },
+  "url:https://www.sshxl.nl/nl/aanbod/1478618-van-lieflandlaan-78-k03": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 669,48",
+   "last_seen": "2026-10-16",
+   "naam": "Van Lieflandlaan 78 k03",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478618-van-lieflandlaan-78-k03"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478619-van-lieflandlaan-78-k23": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 669,48",
+   "last_seen": "2026-10-16",
+   "naam": "Van Lieflandlaan 78 k23",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478619-van-lieflandlaan-78-k23"
+  },
   "url:https://www.sshxl.nl/nl/aanbod/1478620-ina-boudier-bakkerlaan-89-2-k457": {
    "first_seen": "2026-10-15",
    "huur": "€ 446,21",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Ina Boudier-Bakkerlaan 89 2 k457",
    "notified": "2026-10-15",
    "pending_mail": false,
    "plaats": "Utrecht",
    "url": "https://www.sshxl.nl/nl/aanbod/1478620-ina-boudier-bakkerlaan-89-2-k457"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478622-wittevrouwensingel-74-k01": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 490,90",
+   "last_seen": "2026-10-16",
+   "naam": "Wittevrouwensingel 74 k01",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478622-wittevrouwensingel-74-k01"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478626-burgemeester-fockema andreaeplein-356": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 848,75",
+   "last_seen": "2026-10-16",
+   "naam": "Burgemeester Fockema Andreaeplein 356",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478626-burgemeester-fockema andreaeplein-356"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478627-burgemeester-fockema andreaeplein-187": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 800,03",
+   "last_seen": "2026-10-16",
+   "naam": "Burgemeester Fockema Andreaeplein 187",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478627-burgemeester-fockema andreaeplein-187"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478629-burgemeester-fockema andreaeplein-260": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 800,03",
+   "last_seen": "2026-10-16",
+   "naam": "Burgemeester Fockema Andreaeplein 260",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478629-burgemeester-fockema andreaeplein-260"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478630-cambridgelaan-767-k13": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 687,19",
+   "last_seen": "2026-10-16",
+   "naam": "Cambridgelaan 767 k13",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478630-cambridgelaan-767-k13"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478632-burgemeester-fockema andreaeplein-410": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 848,75",
+   "last_seen": "2026-10-16",
+   "naam": "Burgemeester Fockema Andreaeplein 410",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478632-burgemeester-fockema andreaeplein-410"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478634-burgemeester-fockema andreaeplein-218": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 800,03",
+   "last_seen": "2026-10-16",
+   "naam": "Burgemeester Fockema Andreaeplein 218",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478634-burgemeester-fockema andreaeplein-218"
+  },
+  "url:https://www.sshxl.nl/nl/aanbod/1478636-stelplaats-680-k2": {
+   "first_seen": "2026-10-16",
+   "huur": "€ 654,18",
+   "last_seen": "2026-10-16",
+   "naam": "Stelplaats 680 k2",
+   "notified": "2026-10-16",
+   "pending_mail": false,
+   "plaats": "Utrecht",
+   "url": "https://www.sshxl.nl/nl/aanbod/1478636-stelplaats-680-k2"
   },
   "url:https://www.sshxl.nl/nl/aanbod/1478640-van-lieflandlaan-128-k24": {
    "first_seen": "2026-10-13",
@@ -694,7 +804,7 @@
   "url:https://www.sshxl.nl/nl/aanbod/1478659-ina-boudier-bakkerlaan-143-k916": {
    "first_seen": "2026-10-15",
    "huur": "€ 507,08",
-   "last_seen": "2026-10-15",
+   "last_seen": "2026-10-16",
    "naam": "Ina Boudier-Bakkerlaan 143 k916",
    "notified": "2026-10-15",
    "pending_mail": false,
@@ -702,8 +812,18 @@
    "url": "https://www.sshxl.nl/nl/aanbod/1478659-ina-boudier-bakkerlaan-143-k916"
   }
  },
- "last_slot": "2026-10-15-middag",
+ "last_slot": "2026-10-16-ochtend",
  "runs": [
+  {
+   "at": "2026-10-16T08:46+02:00",
+   "found": 26,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 26"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-15T12:01+02:00",
    "found": 32,
