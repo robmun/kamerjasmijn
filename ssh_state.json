@@ -1042,8 +1042,18 @@
    "url": "https://www.sshxl.nl/nl/aanbod/1478686-burgemeester-fockema andreaeplein-23"
   }
  },
- "last_slot": "2026-10-18-ochtend",
+ "last_slot": "2026-10-18-middag",
  "runs": [
+  {
+   "at": "2026-10-18T12:51+02:00",
+   "found": 37,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 37"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-18T08:11+02:00",
    "found": 37,
