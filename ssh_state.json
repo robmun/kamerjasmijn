@@ -1102,8 +1102,18 @@
    "url": "https://www.sshxl.nl/nl/aanbod/1478741-ina-boudier-bakkerlaan-189-k1675"
   }
  },
- "last_slot": "2026-10-19-ochtend",
+ "last_slot": "2026-10-19-middag",
  "runs": [
+  {
+   "at": "2026-10-19T12:34+02:00",
+   "found": 37,
+   "log": [
+    "login: geen inloggegevens",
+    "pagina's: https://www.sshxl.nl/nl/aanbod, https://www.sshxl.nl/nl/shortstay, https://www.sshxl.nl/nl/steden, https://www.sshxl.nl/aanbod",
+    "json-antwoorden: 23, aanbod via json: 0, via links: 37"
+   ],
+   "method": "dom"
+  },
   {
    "at": "2026-10-19T08:32+02:00",
    "found": 38,
