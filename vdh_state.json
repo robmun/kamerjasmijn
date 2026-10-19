@@ -1,5 +1,5 @@
 {
- "fail_count": 0,
+ "fail_count": 1,
  "items": {
   "https://www.vanderhuizen.com/huurwoningen/appartement-2-kamer/te-huur/utrecht-1/centrum/2-kamer-appartement-in-utrecht-centrum-te-huur": {
    "adres": "Voorstraat 35Bis -1",
@@ -240,8 +240,13 @@
    "url": "https://www.vanderhuizen.com/huurwoningen/studio/te-huur/utrecht-1/studio-te-huur-aan-de-amsterdamsestraatweg-te-utrecht"
   }
  },
- "last_slot": "2026-10-18-middag",
+ "last_slot": "2026-10-19-ochtend",
  "runs": [
+  {
+   "at": "2026-10-19T08:33+02:00",
+   "error": "ophalen mislukt: HTTPError",
+   "found": 0
+  },
   {
    "at": "2026-10-18T12:52+02:00",
    "error": "",
