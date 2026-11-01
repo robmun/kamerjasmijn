@@ -44,6 +44,30 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 
 NOT_POSSIBLE = "niet mogelijk om je aan te melden"
 
+# Alleen panden in Utrecht melden. Een pand wordt overgeslagen als op de
+# aanbodpagina een andere plaats bij het pand staat en "Utrecht" niet.
+STAD = os.environ.get("STAD", "Utrecht")
+ANDERE_PLAATSEN = [
+    "Amersfoort", "Nieuwegein", "Zeist", "IJsselstein", "Houten", "Maarssen",
+    "Bilthoven", "De Bilt", "Vianen", "Woerden", "Veenendaal", "Hilversum",
+    "Amsterdam", "Rotterdam", "Den Haag", "Leiden", "Delft", "Arnhem",
+    "Nijmegen", "Wageningen", "Ede", "Zwolle", "Groningen", "Eindhoven",
+    "Tilburg", "Breda", "Enschede", "Maastricht", "Deventer", "Apeldoorn",
+]
+
+
+def in_stad(text):
+    """True als het pand (volgens de tekst op de pagina) in STAD ligt.
+
+    Staat er geen plaats bij, dan nemen we aan dat het in Utrecht ligt
+    (alle bekende Socius-panden, zoals De Ravel, De Saffier en De Veltroos).
+    """
+    low = text.lower()
+    if STAD.lower() in low:
+        return True
+    return not any(re.search(r"\b" + re.escape(p.lower()) + r"\b", low)
+                   for p in ANDERE_PLAATSEN)
+
 
 def clean(text):
     return re.sub(r"\s+", " ", text or "").strip()
@@ -100,6 +124,9 @@ def parse(html):
             continue
         name = clean(h2.get_text())
         panel_text = clean(panel.get_text(" "))
+        if not in_stad(panel_text):
+            print(f"  (overgeslagen, niet in {STAD}: {name})")
+            continue
         # "Open" = de standaardtekst 'niet mogelijk' staat er niet én er is geen
         # kamertabel (die tabel controleren we hieronder per regel). Dit vangt
         # bijv. een nieuwe hospiteer- of infoavond in een ander formaat op.

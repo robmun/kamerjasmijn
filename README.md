@@ -152,3 +152,11 @@ Bij elke wijziging in het Socius-aanbod schrijft de monitor een regel naar
 `aanbod_log.jsonl`: tijdstip, alle panden en alle kamerregels, ook kamers die niet
 claimbaar zijn (met de tekst van de knop). Zo is achteraf te zien wat de monitor
 zag. Het bestand houdt de laatste 2000 wijzigingen bij.
+
+### Stand per 1 november 2026
+
+- Alleen de **Socius-monitor** staat aan, en die meldt alleen panden in **Utrecht**
+  (instelbaar via de omgevingsvariabele `STAD`). Panden waarbij op de aanbodpagina
+  een andere plaats staat, worden overgeslagen.
+- De **woning-monitor (SSH + Van der Huizen)** staat uit en wordt niet meer elk uur
+  door de Socius-monitor gestart.
