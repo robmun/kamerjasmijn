@@ -14,13 +14,17 @@ on:
         description: "Alleen een testmelding sturen"
         type: boolean
         default: false
+      list_chats:
+        description: "Telegram-chats van de bot tonen (stuurt een bericht)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: socius-monitor
+  group: ${{ (inputs.test_notify || inputs.list_chats) && 'socius-test' || 'socius-monitor' }}
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +42,7 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Testmelding
-        if: inputs.test_notify == true
+        if: inputs.test_notify == true || inputs.list_chats == true
         env:
           SOCIUS_USERNAME: ${{ secrets.SOCIUS_USERNAME }}
           SOCIUS_PASSWORD: ${{ secrets.SOCIUS_PASSWORD }}
@@ -48,10 +52,15 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           MAIL_TO: ${{ secrets.MAIL_TO || 'robertmunnichs@gmail.com,jasmijnmunnichs@gmail.com' }}
-        run: python monitor.py --test-notify
+        run: |
+          if [ "${{ inputs.list_chats }}" = "true" ]; then
+            python monitor.py --list-chats
+          else
+            python monitor.py --test-notify
+          fi
 
       - name: Elke minuut controleren (ca. 5u40)
-        if: inputs.test_notify != true
+        if: inputs.test_notify != true && inputs.list_chats != true
         env:
           SOCIUS_USERNAME: ${{ secrets.SOCIUS_USERNAME }}
           SOCIUS_PASSWORD: ${{ secrets.SOCIUS_PASSWORD }}
@@ -81,7 +90,7 @@ jobs:
           done
 
       - name: Opnieuw starten
-        if: always() && inputs.test_notify != true
+        if: always() && inputs.test_notify != true && inputs.list_chats != true
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run monitor.yml -R "$GITHUB_REPOSITORY" --ref main

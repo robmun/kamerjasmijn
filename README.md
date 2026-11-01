@@ -160,3 +160,10 @@ zag. Het bestand houdt de laatste 2000 wijzigingen bij.
   een andere plaats staat, worden overgeslagen.
 - De **woning-monitor (SSH + Van der Huizen)** staat uit en wordt niet meer elk uur
   door de Socius-monitor gestart.
+
+### Meerdere mensen op Telegram
+
+`TELEGRAM_CHAT_ID` mag meerdere chat-ID's bevatten, gescheiden door komma's. Een
+Telegram-groep met de bot erin heeft één (negatief) chat-ID. Om de ID's te vinden:
+start de workflow handmatig met "Telegram-chats van de bot tonen"; de bot stuurt
+dan een lijst van chats die hij de afgelopen 24 uur heeft gezien.

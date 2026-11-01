@@ -214,15 +214,23 @@ def notify(title, message, priority="high"):
         sent = True
 
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    chat = os.environ.get("TELEGRAM_CHAT_ID")
-    if token and chat:
-        requests.post(
-            f"https://api.telegram.org/bot{token}/sendMessage",
-            data={"chat_id": chat,
-                  "text": f"{title}\n\n{message}\n\n{AANBOD_URL}"},
-            timeout=30,
-        ).raise_for_status()
-        sent = True
+    # TELEGRAM_CHAT_ID mag meerdere chats bevatten, gescheiden door komma's
+    chats = [c.strip() for c in os.environ.get("TELEGRAM_CHAT_ID", "").split(",")
+             if c.strip()]
+    tg_errors = []
+    for chat in chats if token else []:
+        try:
+            requests.post(
+                f"https://api.telegram.org/bot{token}/sendMessage",
+                data={"chat_id": chat,
+                      "text": f"{title}\n\n{message}\n\n{AANBOD_URL}"},
+                timeout=30,
+            ).raise_for_status()
+            sent = True
+        except Exception as e:  # één kapotte chat mag de rest niet tegenhouden
+            tg_errors.append(f"chat ...{chat[-4:]}: {type(e).__name__}")
+    if tg_errors:
+        print("Telegram-fouten: " + "; ".join(tg_errors))
 
     user = os.environ.get("SMTP_USER")
     pw = os.environ.get("SMTP_PASSWORD")
@@ -283,11 +291,45 @@ def write_log(projects, rows, state):
     LOG_FILE.write_text("\n".join(lines[-LOG_MAX_LINES:]) + "\n", encoding="utf-8")
 
 
+def list_chats():
+    """Stuur naar de bestaande chat(s) een lijst van alle chats die de bot
+    recent heeft gezien (iemand die /start stuurde of een groep waar de bot
+    aan is toegevoegd). Telegram bewaart die gegevens maximaal 24 uur."""
+    token = os.environ["TELEGRAM_BOT_TOKEN"]
+    r = requests.get(f"https://api.telegram.org/bot{token}/getUpdates",
+                     timeout=30)
+    r.raise_for_status()
+    seen = {}
+    for u in r.json().get("result", []):
+        for key in ("message", "my_chat_member", "channel_post",
+                    "edited_message", "chat_member"):
+            chat = (u.get(key) or {}).get("chat")
+            if chat:
+                naam = chat.get("title") or " ".join(
+                    x for x in (chat.get("first_name"), chat.get("last_name")) if x)
+                seen[chat["id"]] = f"{naam or '?'} ({chat.get('type')})"
+    if seen:
+        lines = [f"{cid}  -  {naam}" for cid, naam in seen.items()]
+        msg = ("Deze chats heeft de bot de afgelopen 24 uur gezien:\n\n"
+               + "\n".join(lines))
+    else:
+        msg = ("De bot heeft de afgelopen 24 uur geen nieuwe chats gezien. "
+               "Stuur in de groep of aan de bot eerst een bericht en probeer "
+               "het opnieuw.")
+    notify("Socius-monitor: Telegram-chats", msg, priority="default")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--test-file", help="lees een opgeslagen HTML-pagina i.p.v. inloggen")
     ap.add_argument("--test-notify", action="store_true", help="stuur alleen een testmelding")
+    ap.add_argument("--list-chats", action="store_true",
+                    help="stuur een lijst van Telegram-chats die de bot kent")
     args = ap.parse_args()
+
+    if args.list_chats:
+        list_chats()
+        return
 
     if args.test_notify:
         notify("Socius-monitor test", "Als je dit ziet, werken de meldingen. 🎉")
