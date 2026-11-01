@@ -167,3 +167,8 @@ zag. Het bestand houdt de laatste 2000 wijzigingen bij.
 Telegram-groep met de bot erin heeft één (negatief) chat-ID. Om de ID's te vinden:
 start de workflow handmatig met "Telegram-chats van de bot tonen"; de bot stuurt
 dan een lijst van chats die hij de afgelopen 24 uur heeft gezien.
+
+### Alleen Telegram (sinds 1 november 2026)
+
+De Socius-monitor stuurt geen e-mail meer; de SMTP-gegevens worden niet meer aan
+het script doorgegeven. Meldingen gaan alleen via Telegram.
