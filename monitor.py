@@ -332,7 +332,9 @@ def main():
         return
 
     if args.test_notify:
-        notify("Socius-monitor test", "Als je dit ziet, werken de meldingen. 🎉")
+        notify(os.environ.get("TEST_TITEL") or "Socius-monitor test",
+               os.environ.get("TEST_TEKST")
+               or "Als je dit ziet, werken de meldingen. 🎉")
         return
 
     state = load_state()
