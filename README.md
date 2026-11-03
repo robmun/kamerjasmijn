@@ -172,3 +172,13 @@ dan een lijst van chats die hij de afgelopen 24 uur heeft gezien.
 
 De Socius-monitor stuurt geen e-mail meer; de SMTP-gegevens worden niet meer aan
 het script doorgegeven. Meldingen gaan alleen via Telegram.
+
+### Berichten aan de bot (sinds 3 november 2026)
+
+Elke minuut kijkt de monitor of iemand de bot Kamerjasmijn een bericht heeft
+gestuurd. Zo ja, dan krijgt alleen de beheerder (het eerste nummer in
+`TELEGRAM_CHAT_ID`, of `TELEGRAM_ADMIN_ID` als die bestaat) een Telegram-bericht
+met naam, chatnummer en de tekst. Staat iemand nog niet op de lijst, dan staat er
+meteen de nieuwe waarde voor `TELEGRAM_CHAT_ID` bij, klaar om te plakken. Er wordt
+niets automatisch beantwoord. De namen en nummers staan bewust niet in deze
+(openbare) repo.

@@ -291,6 +291,61 @@ def write_log(projects, rows, state):
     LOG_FILE.write_text("\n".join(lines[-LOG_MAX_LINES:]) + "\n", encoding="utf-8")
 
 
+def tg_chats():
+    return [c.strip() for c in os.environ.get("TELEGRAM_CHAT_ID", "").split(",")
+            if c.strip()]
+
+
+def check_inbox(state):
+    """Meld nieuwe berichten aan de bot alleen aan de beheerder (Robert).
+
+    De beheerder is TELEGRAM_ADMIN_ID, of anders het eerste nummer in
+    TELEGRAM_CHAT_ID. Er wordt niets automatisch beantwoord. Verwerkte
+    berichten worden bij Telegram afgevinkt (offset in state.json), zodat
+    elk bericht maar één keer wordt gemeld.
+    """
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    chats = tg_chats()
+    admin = os.environ.get("TELEGRAM_ADMIN_ID") or (chats[0] if chats else None)
+    if not token or not admin:
+        return
+    params = {"timeout": 0, "allowed_updates": json.dumps(["message"])}
+    if state.get("tg_offset"):
+        params["offset"] = state["tg_offset"]
+    r = requests.get(f"https://api.telegram.org/bot{token}/getUpdates",
+                     params=params, timeout=30)
+    r.raise_for_status()
+    updates = r.json().get("result", [])
+    for u in updates:
+        msg = u.get("message") or {}
+        chat = msg.get("chat") or {}
+        cid = str(chat.get("id", ""))
+        if not cid or cid == str(admin):
+            continue
+        naam = chat.get("title") or " ".join(
+            x for x in (chat.get("first_name"), chat.get("last_name")) if x) or "?"
+        if chat.get("username"):
+            naam += f" (@{chat['username']})"
+        tekst = msg.get("text") or msg.get("caption") or "(geen tekst)"
+        if cid in chats:
+            status = "Staat al op de lijst."
+        else:
+            nieuw = ",".join(chats + [cid])
+            status = ("Staat nog NIET op de lijst. Nieuwe waarde voor "
+                      f"TELEGRAM_CHAT_ID:\n{nieuw}")
+        requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data={"chat_id": admin,
+                  "text": (f"📩 Bericht aan Kamerjasmijn\n\nVan: {naam}\n"
+                           f"Chatnummer: {cid}\nBericht: {tekst}\n\n{status}")},
+            timeout=30,
+        ).raise_for_status()
+        # na elke gemelde regel meteen onthouden, zodat niets dubbel komt
+        state["tg_offset"] = u["update_id"] + 1
+    if updates:
+        state["tg_offset"] = updates[-1]["update_id"] + 1
+
+
 def list_chats():
     """Stuur naar de bestaande chat(s) een lijst van alle chats die de bot
     recent heeft gezien (iemand die /start stuurde of een groep waar de bot
@@ -338,6 +393,13 @@ def main():
         return
 
     state = load_state()
+
+    if not args.test_file:
+        try:
+            check_inbox(state)
+        except Exception as e:  # mag de kamercontrole nooit tegenhouden
+            print(f"Berichten aan de bot controleren mislukt: {type(e).__name__}")
+        save_state(state)
 
     if args.test_file:
         html = Path(args.test_file).read_text(encoding="utf-8", errors="ignore")
