@@ -22,6 +22,10 @@ on:
         description: "Eigen tekst voor de testmelding (optioneel)"
         type: string
         default: ""
+      diagnose:
+        description: "Paginastructuur van Socius vastleggen (diag.json)"
+        type: boolean
+        default: false
       list_chats:
         description: "Telegram-chats van de bot tonen (stuurt een bericht)"
         type: boolean
@@ -32,7 +36,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: ${{ (inputs.test_notify || inputs.list_chats) && 'socius-test' || 'socius-monitor' }}
+  group: ${{ (inputs.test_notify || inputs.list_chats || inputs.diagnose) && 'socius-test' || 'socius-monitor' }}
   cancel-in-progress: false
 
 jobs:
@@ -50,7 +54,7 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Testmelding
-        if: inputs.test_notify == true || inputs.list_chats == true
+        if: inputs.test_notify == true || inputs.list_chats == true || inputs.diagnose == true
         env:
           SOCIUS_USERNAME: ${{ secrets.SOCIUS_USERNAME }}
           SOCIUS_PASSWORD: ${{ secrets.SOCIUS_PASSWORD }}
@@ -60,14 +64,19 @@ jobs:
           TEST_TITEL: ${{ inputs.test_titel }}
           TEST_TEKST: ${{ inputs.test_tekst }}
         run: |
-          if [ "${{ inputs.list_chats }}" = "true" ]; then
+          if [ "${{ inputs.diagnose }}" = "true" ]; then
+            python monitor.py --diagnose
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add diag.json && git commit -q -m "Diagnose aanbodpagina" && git pull -q --rebase --autostash && git push -q
+          elif [ "${{ inputs.list_chats }}" = "true" ]; then
             python monitor.py --list-chats
           else
             python monitor.py --test-notify
           fi
 
       - name: Elke minuut controleren (ca. 5u40)
-        if: inputs.test_notify != true && inputs.list_chats != true
+        if: inputs.test_notify != true && inputs.list_chats != true && inputs.diagnose != true
         env:
           SOCIUS_USERNAME: ${{ secrets.SOCIUS_USERNAME }}
           SOCIUS_PASSWORD: ${{ secrets.SOCIUS_PASSWORD }}
@@ -94,7 +103,7 @@ jobs:
           done
 
       - name: Opnieuw starten
-        if: always() && inputs.test_notify != true && inputs.list_chats != true
+        if: always() && inputs.test_notify != true && inputs.list_chats != true && inputs.diagnose != true
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run monitor.yml -R "$GITHUB_REPOSITORY" --ref main

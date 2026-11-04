@@ -346,6 +346,42 @@ def check_inbox(state):
         state["tg_offset"] = updates[-1]["update_id"] + 1
 
 
+def diagnose():
+    """Schrijf een beknopte, anonieme beschrijving van de aanbodpagina naar
+    diag.json (alleen paginastructuur en koppen, geen persoonsgegevens)."""
+    html = fetch_aanbod(os.environ["SOCIUS_USERNAME"], os.environ["SOCIUS_PASSWORD"])
+    soup = BeautifulSoup(html, "html.parser")
+    for t in soup(["script", "style"]):
+        t.decompose()
+    panels = []
+    for panel in soup.select("div.panel-body"):
+        txt = clean(panel.get_text(" "))
+        panels.append({
+            "h2": [clean(h.get_text()) for h in panel.find_all("h2")][:5],
+            "h4": [clean(h.get_text()) for h in panel.find_all("h4")][:5],
+            "tables": len(panel.find_all("table")),
+            "in_stad": in_stad(txt),
+            "andere_plaatsen": [p for p in ANDERE_PLAATSEN
+                                if re.search(r"\b" + re.escape(p.lower()) + r"\b", txt.lower())],
+            "niet_mogelijk": NOT_POSSIBLE in txt,
+            "lengte": len(txt),
+        })
+    main = soup.find("main") or soup.body or soup
+    koppen = [f"{h.name}: {clean(h.get_text())[:80]}"
+              for h in main.find_all(["h1", "h2", "h3", "h4"])][:40]
+    classes = {}
+    for d in soup.find_all("div", class_=True):
+        for c in d.get("class", []):
+            classes[c] = classes.get(c, 0) + 1
+    out = {"title": clean(soup.title.get_text()) if soup.title else None,
+           "lengte_html": len(html), "panel_body": len(panels), "panels": panels,
+           "tables_totaal": len(soup.find_all("table")), "koppen": koppen,
+           "div_classes": sorted(classes.items(), key=lambda x: -x[1])[:40]}
+    Path(__file__).with_name("diag.json").write_text(
+        json.dumps(out, indent=2, ensure_ascii=False))
+    print(json.dumps(out, indent=2, ensure_ascii=False))
+
+
 def list_chats():
     """Stuur naar de bestaande chat(s) een lijst van alle chats die de bot
     recent heeft gezien (iemand die /start stuurde of een groep waar de bot
@@ -378,9 +414,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--test-file", help="lees een opgeslagen HTML-pagina i.p.v. inloggen")
     ap.add_argument("--test-notify", action="store_true", help="stuur alleen een testmelding")
+    ap.add_argument("--diagnose", action="store_true",
+                    help="schrijf paginastructuur naar diag.json")
     ap.add_argument("--list-chats", action="store_true",
                     help="stuur een lijst van Telegram-chats die de bot kent")
     args = ap.parse_args()
+
+    if args.diagnose:
+        diagnose()
+        return
 
     if args.list_chats:
         list_chats()
