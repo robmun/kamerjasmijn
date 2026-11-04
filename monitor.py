@@ -373,7 +373,28 @@ def diagnose():
     for d in soup.find_all("div", class_=True):
         for c in d.get("class", []):
             classes[c] = classes.get(c, 0) + 1
-    out = {"title": clean(soup.title.get_text()) if soup.title else None,
+    body = soup.select_one("div.portlet-body")
+    def skelet(el, d=0):
+        if d > 6 or not getattr(el, "name", None):
+            return []
+        regels = ["  " * d + el.name + "." + ".".join(el.get("class", []))
+                  + (f"#{el.get('id')}" if el.get("id") else "")
+                  + (f" [{', '.join(k for k in el.attrs if k.startswith('data-'))}]"
+                     if any(k.startswith('data-') for k in el.attrs) else "")]
+        for c in el.find_all(recursive=False)[:15]:
+            regels += skelet(c, d + 1)
+        return regels
+    scripts = [sc.get("src") for sc in BeautifulSoup(html, "html.parser").find_all("script")
+               if sc.get("src")]
+    inline = [clean(sc.string or "")[:300] for sc in BeautifulSoup(html, "html.parser").find_all("script")
+              if not sc.get("src") and sc.string and ("aanbod" in sc.string.lower()
+                                                     or "ajax" in sc.string.lower()
+                                                     or "fetch" in sc.string.lower())]
+    urls = sorted(set(re.findall(r"""["'](/[a-z_/]*(?:aanbod|kamer)[a-z_/]*)["']""", html)))
+    out_extra = {"portlet_tekst": clean(body.get_text(" "))[:1500] if body else None,
+                 "portlet_skelet": skelet(body)[:80] if body else None,
+                 "scripts": scripts[-15:], "inline_scripts": inline[:6], "urls": urls}
+    out = {**out_extra, "title": clean(soup.title.get_text()) if soup.title else None,
            "lengte_html": len(html), "panel_body": len(panels), "panels": panels,
            "tables_totaal": len(soup.find_all("table")), "koppen": koppen,
            "div_classes": sorted(classes.items(), key=lambda x: -x[1])[:40]}
