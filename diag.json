@@ -1,4 +1,15 @@
 {
+  "portlet_tekst": "Schrijf je eerst in op een wachtlijst om het aanbod te bekijken.",
+  "portlet_skelet": [
+    "div.portlet-body"
+  ],
+  "scripts": [
+    "https://connect.sociuswonen.nl/assets/dest/main.js?v=700"
+  ],
+  "inline_scripts": [
+    "/** * Retrieves a translation. * * @param {string} key * * @return {string} */ window.trans = function(key) { var args = Array.prototype.slice.call(arguments, 1); var translation = key; if(!Application.translations) { throw 'The translations are missing.'; } if(typeof Application.translations[key] !"
+  ],
+  "urls": [],
   "title": "Woonruimte vinden | Socius Connect",
   "lengte_html": 113894,
   "panel_body": 0,
