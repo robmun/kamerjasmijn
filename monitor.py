@@ -296,6 +296,18 @@ def tg_chats():
             if c.strip()]
 
 
+def send_admin(text):
+    """Stuur een bericht alleen naar de beheerder (eerste chatnummer)."""
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    chats = tg_chats()
+    admin = os.environ.get("TELEGRAM_ADMIN_ID") or (chats[0] if chats else None)
+    if token and admin:
+        requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                      data={"chat_id": admin, "text": text},
+                      timeout=30).raise_for_status()
+    print(f"[beheerder] {text}")
+
+
 def check_inbox(state):
     """Meld nieuwe berichten aan de bot alleen aan de beheerder (Robert).
 
@@ -488,6 +500,19 @@ def main():
     projects, available = parse(html)
     if not projects:
         print("Waarschuwing: geen projecten gevonden; is de pagina veranderd?")
+        if not args.test_file and not state.get("geen_aanbod"):
+            body = BeautifulSoup(html, "html.parser").select_one("div.portlet-body")
+            uitleg = clean(body.get_text(" "))[:300] if body else ""
+            send_admin("⚠️ Socius-monitor ziet geen aanbod meer.\n\n"
+                       + (f"Socius toont: \"{uitleg}\"\n\n" if uitleg else "")
+                       + "Zolang dit zo is, komen er GEEN kamermeldingen. "
+                       "Je krijgt deze waarschuwing één keer; zodra het aanbod "
+                       "weer zichtbaar is, krijg je bericht.")
+            state["geen_aanbod"] = True
+    elif state.get("geen_aanbod"):
+        if not args.test_file:
+            send_admin("✅ Socius-monitor ziet het aanbod weer. Meldingen werken weer.")
+        state["geen_aanbod"] = False
 
     if not args.test_file:
         write_log(projects, getattr(parse, "all_rows", []), state)
