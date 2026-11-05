@@ -488,9 +488,9 @@ def main():
         except LoginError as e:
             print(e)
             if not state.get("login_error"):
-                notify("Socius-monitor: inloggen mislukt",
-                       "De monitor kan niet inloggen. Klopt je wachtwoord nog? "
-                       "Je krijgt deze melding één keer.", priority="default")
+                send_admin("⚠️ Socius-monitor: inloggen mislukt.\n\nDe monitor "
+                           "kan niet inloggen bij Socius. Klopt het wachtwoord "
+                           "nog? Je krijgt deze melding één keer.")
                 state["login_error"] = True
                 save_state(state)
             sys.exit(1)
