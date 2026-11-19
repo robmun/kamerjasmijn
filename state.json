@@ -1,8 +1,10 @@
 {
-  "notified": [],
+  "notified": [
+    "4b1bd6b4fb85fd84"
+  ],
   "open_projects": [],
   "login_error": false,
-  "last_snapshot": "2e2d92817d1f3754",
+  "last_snapshot": "ef4bb51e5886cd4f",
   "tg_offset": 311374831,
   "geen_aanbod": false
 }
